@@ -2,6 +2,8 @@
 Thanks to Tomek Korbak for his Shunting-yard implementation for order of operations
  
 https://tomekkorbak.com/2020/03/25/implementing-shunting-yard-parsing/
+# To-do list:
+- XOR does not work yet
 # How to use:
 
 There are two programs: ```basic_conversion.py``` and ```shunting_yard_modified.py```. ```shunting_yard_modified.py``` is preferred over ```basic_conversion.py``` because ```shunting_yard_modified.py``` uses a modified Djikstra's Shunting-yard algorithim while ```basic_conversion.py``` is a naive algorithim that I made up. ```shunting_yard_modified.py``` should be more robust and respect order of precedence for logical operators, according to [Wikipedia](https://en.wikipedia.org/wiki/Logical_connective#Order_of_precedence).
