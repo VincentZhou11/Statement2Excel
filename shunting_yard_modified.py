@@ -2,6 +2,7 @@
 # https://tomekkorbak.com/2020/03/25/implementing-shunting-yard-parsing/
 from dataclasses import dataclass
 from typing import Optional, List
+import json
 from operator import add, sub, mul, truediv
 
 op_not = "¬"
@@ -10,6 +11,8 @@ op_or = "∨"
 op_if = "→"
 op_iff = "↔"
 op_xor = "⊕"
+
+test = False
 
 @dataclass
 class Node:
@@ -115,35 +118,59 @@ class Tree:
             op = OPS[node.symbol]
             return op(self.evaluate(node.left), self.evaluate(node.right))
 
-tree = Tree.build('(A ↔ B) ↔ (D ∧  C)'.replace(" ", ""))
-print(tree.evaluate())
 
-tree = Tree.build('(B ↔ C) ↔ ¬(¬C →  D)'.replace(" ", ""))
-print(tree.evaluate())
+if test:
+    # Unit Tests
+    tree = Tree.build('(A ↔ B) ↔ (D ∧  C)'.replace(" ", ""))
+    print(tree.evaluate())
 
-tree = Tree.build('(C ↔ D) ↔ (¬D ∧ ¬A)'.replace(" ", ""))
-print(tree.evaluate())
+    tree = Tree.build('(B ↔ C) ↔ ¬(¬C →  D)'.replace(" ", ""))
+    print(tree.evaluate())
 
-tree = Tree.build('(D ↔ A) ↔ (C ∨ B)'.replace(" ", ""))
-print(tree.evaluate())
+    tree = Tree.build('(C ↔ D) ↔ (¬D ∧ ¬A)'.replace(" ", ""))
+    print(tree.evaluate())
 
-tree = Tree.build('A ↔ (¬B → ¬C)'.replace(" ", ""))
-print(tree.evaluate())
+    tree = Tree.build('(D ↔ A) ↔ (C ∨ B)'.replace(" ", ""))
+    print(tree.evaluate())
 
-tree = Tree.build('B ↔ (A ∧ ¬D)'.replace(" ", ""))
-print(tree.evaluate())
+    tree = Tree.build('A ↔ (¬B → ¬C)'.replace(" ", ""))
+    print(tree.evaluate())
 
-tree = Tree.build('C ↔ (¬D ↔ B)'.replace(" ", ""))
-print(tree.evaluate())
+    tree = Tree.build('B ↔ (A ∧ ¬D)'.replace(" ", ""))
+    print(tree.evaluate())
 
-tree = Tree.build('D ↔ (¬C ∨ A)'.replace(" ", ""))
-print(tree.evaluate())
+    tree = Tree.build('C ↔ (¬D ↔ B)'.replace(" ", ""))
+    print(tree.evaluate())
 
-sample_map = {"Akni":"a","Akna":"b","Bkni":"c","Bkna":"d","Ckni":"e","Ckna":"f"}
-tree = Tree.build('Akni → (Ckna ↔ Bkni)'.replace(" ", ""))
-output = tree.evaluate()
-print(output)
-row = 2
-for key in sample_map.keys():
-    output = output.replace(key, sample_map[key] + str(row))
-print(output)
+    tree = Tree.build('D ↔ (¬C ∨ A)'.replace(" ", ""))
+    print(tree.evaluate())
+
+    # Replacement tests
+
+    sample_map = {"Akni":"a","Akna":"b","Bkni":"c","Bkna":"d","Ckni":"e","Ckna":"f"}
+    tree = Tree.build('Akni → (Ckna ↔ Bkni)'.replace(" ", ""))
+    output = tree.evaluate()
+    print(output)
+    row = 2
+    for key in sample_map.keys():
+        output = output.replace(key, sample_map[key] + str(row))
+    print(output)
+
+    tree = Tree.build('D ↔ (¬C ∨ A)'.replace(" ", ""))
+    print(tree.evaluate())
+
+string = input("Column mapping: ")
+mapping = json.loads(string)
+print(mapping)
+
+row = input("Input row #: ")
+
+while (True):
+    string = input("Input statement: ")
+    tree = Tree.build(string.replace(' ', ''))
+    output = tree.evaluate()
+    print(f"Raw Output: {output}")
+    output2 = output
+    for key in mapping.keys():
+        output2 = output2.replace(key, mapping[key]+str(row))
+    print(f"Output: {output2}")
