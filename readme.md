@@ -17,6 +17,6 @@ Here, input the row number. You should set the row number to the first row in yo
 ~~~
 Input statement:
 ~~~
-Here, input the statements. The program will only recognize these symbols:```∧ ∨ → ↔ ⊕ ¬```. Only enter one statement at a time. This prompt is in an infinite loop and can only be terminated manually.
+Here, input the statements. The program will only recognize these symbols:```∧ ∨ → ↔ ⊕ ¬```. Only enter one statement at a time. This prompt is in an infinite loop and can only be terminated manually. This program doesn't follow order of operations for logical operators and assumes left to right.
 # Requirements:
 Python 3+ Environment. No additional packages required.
