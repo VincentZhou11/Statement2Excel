@@ -28,7 +28,8 @@ precedence = {
     f"{op_and}": 2,
     f"{op_or}": 3,
     f"{op_if}": 4,
-    f"{op_iff}": 5
+    f"{op_iff}": 5,
+    f"{op_xor}": 5
 }
 
 @dataclass
@@ -107,7 +108,8 @@ class Tree:
             f"{op_and}": lambda x, y: f"AND({x},{y})",
             f"{op_or}": lambda x, y: f"OR({x},{y})",
             f"{op_if}": lambda x, y: f"OR(NOT({x}),{y})",
-            f"{op_iff}": lambda x, y: f"({x}={y})"
+            f"{op_iff}": lambda x, y: f"({x}={y})",
+            f"{op_xor}": lambda x, y: f"({x}=NOT({y}))"
         }
         node = node or self.root
         if node.is_leaf():
@@ -167,7 +169,7 @@ while (True):
     string = input("Input statement (type 'x' to exit): ")
     if string == "x":
         break
-    tree = Tree.build(string.replace(' ', ''))
+    tree = Tree.build(string.replace(' ', '').strip())
     output = tree.evaluate()
     print(f"Raw Output: {output}")
     output2 = output
