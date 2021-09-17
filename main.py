@@ -8,7 +8,7 @@ op_if = "→"
 op_iff = "↔"
 op_xor = "⊕"
 
-test = "(B ↔ C) ↔ ¬(¬C →  D)"
+test = "A_kni → (C_kna ↔ B_kni)"
 test2 = test.replace(" ", "")
 print(f"Test string: {test2}")
 

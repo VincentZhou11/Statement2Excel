@@ -37,7 +37,7 @@ class Tree:
         prev = ''
         tokenized = []
         for char in text:
-            if prev.isalpha() and char.isalpha():
+            if prev.isalnum() and char.isalnum():
                 tokenized.append(tokenized.pop() + char)
             else:
                 tokenized.append(char)
@@ -54,8 +54,8 @@ class Tree:
         operator_stack: List[str] = []
         operand_stack: List[Node] = []
         for char in cls._tokenize(text):
-            print(operator_stack, operand_stack, char)
-            if char.isalpha():
+            #print(operator_stack, operand_stack, char)
+            if char.isalnum():
                 operand_stack.append(Node(symbol=char, left=None, right=None))
             elif len(operator_stack) > 0 and operator_stack[-1] == op_not and char in "∧∨→↔⊕":
                 expression = operand_stack.pop()
@@ -78,9 +78,9 @@ class Tree:
                     else:
                         left = operand_stack.pop()
                         operand_stack.append(Node(symbol=op, left=left, right=right))
-                    print(operator_stack, operand_stack)
+                    #print(operator_stack, operand_stack)
                 operator_stack.pop()
-                print(operator_stack, operand_stack)
+                #print(operator_stack, operand_stack)
             else:
                 operator_stack.append(char)
         while len(operator_stack) > 0:
@@ -95,7 +95,7 @@ class Tree:
             else:
                 left = operand_stack.pop()
                 operand_stack.append(Node(symbol=op, left=left, right=right))
-        print(operator_stack, operand_stack)
+        #print(operator_stack, operand_stack)
         return cls(root=operand_stack.pop())
 
     def evaluate(self, node: Optional[Node] = None):
@@ -126,3 +126,24 @@ print(tree.evaluate())
 
 tree = Tree.build('(D ↔ A) ↔ (C ∨ B)'.replace(" ", ""))
 print(tree.evaluate())
+
+tree = Tree.build('A ↔ (¬B → ¬C)'.replace(" ", ""))
+print(tree.evaluate())
+
+tree = Tree.build('B ↔ (A ∧ ¬D)'.replace(" ", ""))
+print(tree.evaluate())
+
+tree = Tree.build('C ↔ (¬D ↔ B)'.replace(" ", ""))
+print(tree.evaluate())
+
+tree = Tree.build('D ↔ (¬C ∨ A)'.replace(" ", ""))
+print(tree.evaluate())
+
+sample_map = {"Akni":"a","Akna":"b","Bkni":"c","Bkna":"d","Ckni":"e","Ckna":"f"}
+tree = Tree.build('Akni → (Ckna ↔ Bkni)'.replace(" ", ""))
+output = tree.evaluate()
+print(output)
+row = 2
+for key in sample_map.keys():
+    output = output.replace(key, sample_map[key] + str(row))
+print(output)
