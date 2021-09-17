@@ -81,7 +81,9 @@ print(mapping)
 row = input("Input row #: ")
 
 while (True):
-    string = input("Input statement: ")
+    string = input("Input statement (type 'x' to exit): ")
+    if string == "x":
+        break
     output = recursion(string.replace(' ', ''))
     print(f"Raw Output: {output}")
     output2 = output

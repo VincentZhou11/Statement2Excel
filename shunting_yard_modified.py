@@ -1,9 +1,8 @@
-# Code adapated from Tomek Korbak:
+# Code adapted from Tomek Korbak:
 # https://tomekkorbak.com/2020/03/25/implementing-shunting-yard-parsing/
 from dataclasses import dataclass
 from typing import Optional, List
 import json
-from operator import add, sub, mul, truediv
 
 op_not = "¬"
 op_and = "∧"
@@ -23,12 +22,13 @@ class Node:
     def is_leaf(self) -> bool:
         return self.left is None and self.right is None
 
+
 precedence = {
-    f"{op_not}":1,
-    f"{op_and}":2,
-    f"{op_or}":3,
-    f"{op_if}":4,
-    f"{op_iff}":5
+    f"{op_not}": 1,
+    f"{op_and}": 2,
+    f"{op_or}": 3,
+    f"{op_if}": 4,
+    f"{op_iff}": 5
 }
 
 @dataclass
@@ -57,7 +57,7 @@ class Tree:
         operator_stack: List[str] = []
         operand_stack: List[Node] = []
         for char in cls._tokenize(text):
-            #print(operator_stack, operand_stack, char)
+            # print(operator_stack, operand_stack, char)
             if char.isalnum():
                 operand_stack.append(Node(symbol=char, left=None, right=None))
             elif len(operator_stack) > 0 and operator_stack[-1] == op_not and char in "∧∨→↔⊕":
@@ -81,9 +81,9 @@ class Tree:
                     else:
                         left = operand_stack.pop()
                         operand_stack.append(Node(symbol=op, left=left, right=right))
-                    #print(operator_stack, operand_stack)
+                    # print(operator_stack, operand_stack)
                 operator_stack.pop()
-                #print(operator_stack, operand_stack)
+                # print(operator_stack, operand_stack)
             else:
                 operator_stack.append(char)
         while len(operator_stack) > 0:
@@ -98,7 +98,7 @@ class Tree:
             else:
                 left = operand_stack.pop()
                 operand_stack.append(Node(symbol=op, left=left, right=right))
-        #print(operator_stack, operand_stack)
+        # print(operator_stack, operand_stack)
         return cls(root=operand_stack.pop())
 
     def evaluate(self, node: Optional[Node] = None):
@@ -146,7 +146,6 @@ if test:
     print(tree.evaluate())
 
     # Replacement tests
-
     sample_map = {"Akni":"a","Akna":"b","Bkni":"c","Bkna":"d","Ckni":"e","Ckna":"f"}
     tree = Tree.build('Akni → (Ckna ↔ Bkni)'.replace(" ", ""))
     output = tree.evaluate()
@@ -155,18 +154,19 @@ if test:
     for key in sample_map.keys():
         output = output.replace(key, sample_map[key] + str(row))
     print(output)
-
     tree = Tree.build('D ↔ (¬C ∨ A)'.replace(" ", ""))
     print(tree.evaluate())
 
-string = input("Column mapping: ")
-mapping = json.loads(string)
+json_str = input("Column mapping: ")
+mapping = json.loads(json_str)
 print(mapping)
 
 row = input("Input row #: ")
 
 while (True):
-    string = input("Input statement: ")
+    string = input("Input statement (type 'x' to exit): ")
+    if string == "x":
+        break
     tree = Tree.build(string.replace(' ', ''))
     output = tree.evaluate()
     print(f"Raw Output: {output}")
