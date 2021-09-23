@@ -159,17 +159,31 @@ if test:
     tree = Tree.build('D ↔ (¬C ∨ A)'.replace(" ", ""))
     print(tree.evaluate())
 
-json_str = input("Column mapping: ")
+json_str = input("Column mapping (type '{}' to skip): ")
 mapping = json.loads(json_str)
 print(mapping)
 
-row = input("Input row #: ")
+if json_str == "{}":
+    row = ""
+else:
+    row = input("Input row #: ")
 
-while (True):
+
+
+def remove_unknown_characters(string: str):
+    ret = ""
+    for char in string:
+        if char.isalnum() or char in "∧∨→↔⊕¬_":
+            ret += char
+    return ret
+
+
+while True:
+    print("Symbols: ∧∨→↔⊕¬")
     string = input("Input statement (type 'x' to exit): ")
     if string == "x":
         break
-    tree = Tree.build(string.replace(' ', '').strip())
+    tree = Tree.build(remove_unknown_characters(string))
     output = tree.evaluate()
     print(f"Raw Output: {output}")
     output2 = output
