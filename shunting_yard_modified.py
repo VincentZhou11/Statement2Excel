@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from typing import Optional, List
 import json
 
+test = False
+
 op_not = "¬"
 op_and = "∧"
 op_or = "∨"
@@ -11,7 +13,15 @@ op_if = "→"
 op_iff = "↔"
 op_xor = "⊕"
 
-test = False
+precedence = {
+    f"{op_not}": 1,
+    f"{op_and}": 2,
+    f"{op_or}": 3,
+    f"{op_if}": 4,
+    f"{op_iff}": 5,
+    f"{op_xor}": 5
+}
+
 
 @dataclass
 class Node:
@@ -22,15 +32,6 @@ class Node:
     def is_leaf(self) -> bool:
         return self.left is None and self.right is None
 
-
-precedence = {
-    f"{op_not}": 1,
-    f"{op_and}": 2,
-    f"{op_or}": 3,
-    f"{op_if}": 4,
-    f"{op_iff}": 5,
-    f"{op_xor}": 5
-}
 
 @dataclass
 class Tree:
@@ -163,11 +164,11 @@ json_str = input("Column mapping (type '{}' to skip): ")
 mapping = json.loads(json_str)
 print(mapping)
 
+row = ""
 if json_str == "{}":
-    row = ""
+    pass
 else:
     row = input("Input row #: ")
-
 
 
 def remove_unknown_characters(string: str):
