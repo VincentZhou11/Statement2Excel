@@ -18,7 +18,7 @@ def process_query(string: str) -> dict:
             ret_dict[key] = value
     return ret_dict
 
-@csrf_exempt
+
 def index(request):
     string = unquote(request.META["QUERY_STRING"])
     print(string)
