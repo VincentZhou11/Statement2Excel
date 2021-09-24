@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div style="width: 80%; margin: auto;">
+            <p>Logic Statement to Spreadsheet Formulas</p>
+            <form id="form" class="pure-form pure-form-aligned" action="javascript:submit()">
+                <fieldset>
+                    <legend>Settings</legend>
+                    <div class="pure-control-group">
+                        <label for="mapping">Mapping: </label>
+                        <input id="mapping" type="text" placeholder="{}">
+                        <span class="pure-form-message-inline">Leave empty for no mapping</span>
+                    </div>
+                    <div class="pure-control-group">
+                        <label for="rows">Rows: </label>
+                        <input id="rows" type="number" placeholder="0">
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Statements</legend>
+                    <p>Symbols: ∧∨→↔⊕¬</p>
+                    <div class="pure-control-group">
+                        <label for="statements">Statements: </label>
+                        <textarea id="statements" rows="3"></textarea>
+                        <span class="pure-form-message-inline">Seperate statement with newlines</span>
+                    </div>
+                    <div class="pure-controls">
+                        <button type="submit" class="pure-button pure-button-primary">Convert</button>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Results</legend>
+                    <div class="pure-control-group">
+                        <label for="result">Mapped Output: </label>
+                        <textarea id="result" rows="3" readonly></textarea>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <script>
+            function submit() {
+                console.log("submit");
+                var mapping = $("#mapping").val();
+                var rows = $("#rows").val();
+                var statements = $("#statements").val().split("\n");
+
+                console.log(mapping);
+                if (mapping == "") {
+                    mapping = "{}";
+                }
+                console.log(rows);
+                if (rows == ""){
+                    rows = 0;
+                }
+                console.log(statements);
+
+                $.get("http://127.0.0.1:8000/conversion/", {"mapping": mapping, "rows": rows, "statements":JSON.stringify(statements)}, function(data, status){
+                    console.log("Status: " + status);
+                    console.log(data);
+                    if (!data.error) {
+                        var result = "";
+                        for (const line of data.result) {
+                            console.log(line);
+                            result = result + line + "\n";
+                        }
+                        $("#result").html(result);
+                    }
+                }, "json");
+            }
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    </body>
+</html>

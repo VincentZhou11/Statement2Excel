@@ -2,9 +2,6 @@
 # https://tomekkorbak.com/2020/03/25/implementing-shunting-yard-parsing/
 from dataclasses import dataclass
 from typing import Optional, List
-import json
-
-test = False
 
 op_not = "¬"
 op_and = "∧"
@@ -122,58 +119,11 @@ class Tree:
             return op(self.evaluate(node.left), self.evaluate(node.right))
 
 
-if test:
-    # Unit Tests
-    tree = Tree.build('(A ↔ B) ↔ (D ∧  C)'.replace(" ", ""))
-    print(tree.evaluate())
-
-    tree = Tree.build('(B ↔ C) ↔ ¬(¬C →  D)'.replace(" ", ""))
-    print(tree.evaluate())
-
-    tree = Tree.build('(C ↔ D) ↔ (¬D ∧ ¬A)'.replace(" ", ""))
-    print(tree.evaluate())
-
-    tree = Tree.build('(D ↔ A) ↔ (C ∨ B)'.replace(" ", ""))
-    print(tree.evaluate())
-
-    tree = Tree.build('A ↔ (¬B → ¬C)'.replace(" ", ""))
-    print(tree.evaluate())
-
-    tree = Tree.build('B ↔ (A ∧ ¬D)'.replace(" ", ""))
-    print(tree.evaluate())
-
-    tree = Tree.build('C ↔ (¬D ↔ B)'.replace(" ", ""))
-    print(tree.evaluate())
-
-    tree = Tree.build('D ↔ (¬C ∨ A)'.replace(" ", ""))
-    print(tree.evaluate())
-
-    # Replacement tests
-    sample_map = {"Akni":"a","Akna":"b","Bkni":"c","Bkna":"d","Ckni":"e","Ckna":"f"}
-    tree = Tree.build('Akni → (Ckna ↔ Bkni)'.replace(" ", ""))
-    output = tree.evaluate()
-    print(output)
-    row = 2
-    for key in sample_map.keys():
-        output = output.replace(key, sample_map[key] + str(row))
-    print(output)
-    tree = Tree.build('D ↔ (¬C ∨ A)'.replace(" ", ""))
-    print(tree.evaluate())
-
-json_str = input("Column mapping (type '{}' to skip): ")
-mapping = json.loads(json_str)
-print(mapping)
-
-row = ""
-if json_str == "{}":
-    pass
-else:
-    row = input("Input row #: ")
-
-
 def contains_unknown_characters(string: str):
     for char in string:
-        if not(char.isalnum() or char in "∧∨→↔⊕¬_"):
+        if not(char.isalnum() or char in "∧∨→↔⊕¬_" or char.isspace()):
+            print(char)
+            print(ord(char))
             return True
     return False
 
@@ -186,15 +136,7 @@ def remove_unknown_characters(string: str):
     return ret
 
 
-while True:
-    print("Symbols: ∧∨→↔⊕¬")
-    string = input("Input statement (type 'x' to exit): ")
-    if string == "x":
-        break
-    tree = Tree.build(remove_unknown_characters(string))
-    output = tree.evaluate()
-    print(f"Raw Output: {output}")
-    output2 = output
+def do_mapping(mapping: dict, row:int, string:str):
     for key in mapping.keys():
-        output2 = output2.replace(key, mapping[key]+str(row))
-    print(f"Output: {output2}")
+        string = string.replace(key, mapping[key]+str(row))
+    return string
