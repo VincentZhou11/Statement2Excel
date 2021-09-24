@@ -17,8 +17,8 @@
                         <span class="pure-form-message-inline">Leave empty for no mapping</span>
                     </div>
                     <div class="pure-control-group">
-                        <label for="rows">Rows: </label>
-                        <input id="rows" type="number" placeholder="0">
+                        <label for="row">Row: </label>
+                        <input id="row" type="number" placeholder="0">
                     </div>
                 </fieldset>
                 <fieldset>
@@ -46,20 +46,20 @@
             function submit() {
                 console.log("submit");
                 var mapping = $("#mapping").val();
-                var rows = $("#rows").val();
+                var row = $("#row").val();
                 var statements = $("#statements").val().split("\n");
 
                 console.log(mapping);
                 if (mapping == "") {
                     mapping = "{}";
                 }
-                console.log(rows);
-                if (rows == ""){
-                    rows = 0;
+                console.log(row);
+                if (row == ""){
+                    row = 0;
                 }
                 console.log(statements);
 
-                $.get("http://127.0.0.1:8000/conversion/", {"mapping": mapping, "rows": rows, "statements":JSON.stringify(statements)}, function(data, status){
+                $.get("http://127.0.0.1:8000/conversion/", {"mapping": mapping, "row": row, "statements":JSON.stringify(statements)}, function(data, status){
                     console.log("Status: " + status);
                     console.log(data);
                     if (!data.error) {

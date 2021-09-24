@@ -24,7 +24,7 @@ def index(request):
     print(string)
     query_dict: dict = process_query(string)
     response_dict: dict = {}
-    if "statements" in query_dict and "mapping" in query_dict and "rows" in query_dict:
+    if "statements" in query_dict and "mapping" in query_dict and "row" in query_dict:
         statements = query_dict["statements"].strip('][').split(',')
         results = []
         for statement in statements:
@@ -53,7 +53,7 @@ def index(request):
         mapped_results = []
         for result in results:
             for key in mapping.keys():
-                result.replace(key, mapping[key] + str(query_dict["rows"]))
+                result = result.replace(key, mapping[key] + str(query_dict["row"]))
             mapped_results.append(result)
 
         response_dict["error"] = False
