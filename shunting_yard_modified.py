@@ -173,7 +173,7 @@ else:
 
 def contains_unknown_characters(string: str):
     for char in string:
-        if not(char.isalnum() or char in "∧∨→↔⊕¬_"):
+        if not(char.isalnum() or char in "∧∨→↔⊕¬_()"):
             return True
     return False
 

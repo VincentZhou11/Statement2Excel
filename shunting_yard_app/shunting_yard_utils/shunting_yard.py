@@ -121,7 +121,7 @@ class Tree:
 
 def contains_unknown_characters(string: str):
     for char in string:
-        if not(char.isalnum() or char in "∧∨→↔⊕¬_" or char.isspace()):
+        if not(char.isalnum() or char in "∧∨→↔⊕¬_()" or char.isspace()):
             print(char)
             print(ord(char))
             return True
@@ -131,7 +131,7 @@ def contains_unknown_characters(string: str):
 def remove_unknown_characters(string: str):
     ret = ""
     for char in string:
-        if char.isalnum() or char in "∧∨→↔⊕¬_":
+        if char.isalnum() or char in "∧∨→↔⊕¬_()":
             ret += char
     return ret
 
