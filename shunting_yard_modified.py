@@ -181,7 +181,7 @@ def contains_unknown_characters(string: str):
 def remove_unknown_characters(string: str):
     ret = ""
     for char in string:
-        if char.isalnum() or char in "∧∨→↔⊕¬_":
+        if char.isalnum() or char in "∧∨→↔⊕¬_()":
             ret += char
     return ret
 
